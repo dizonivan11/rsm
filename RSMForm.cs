@@ -19,6 +19,7 @@ namespace rsm {
         const int MACRO_PADDING = 8;
         MacroThread thread;
         Config config;
+        int lastMacroY = 0;
 
         // Import the mouse_event function from the Windows API
         [DllImport("user32.dll")]
@@ -47,7 +48,7 @@ namespace rsm {
             txtProcessName.Text = config.processName;
             numDelay.Value = config.delay;
             for (int m = 0; m < config.macros.Count; m++) {
-                GenerateMacroUI(m);
+                GenerateMacroUI(config.macros[m], lastMacroY);
             }
         }
 
@@ -84,21 +85,12 @@ namespace rsm {
             return 0;
         }
 
-        void GenerateMacroUI(int index) {
-            var macro = config.macros[index];
+        void GenerateMacroUI(Macro macro, int lastMacroBottomBounds) {
             GroupBox gboxMacroInstance = new GroupBox {
                 Text = macro.Name,
-                Size = gboxMacro.Size
+                Size = gboxMacro.Size,
+                Location = new Point(gboxMacro.Location.X, lastMacroBottomBounds)
             };
-            if (index > 0) {
-                gboxMacroInstance.Location = new Point(
-                    gboxMacro.Location.X,
-                    pnlMacros.Controls[index].Bounds.Bottom + MACRO_PADDING);
-            } else {
-                gboxMacroInstance.Location = new Point(
-                    gboxMacro.Location.X,
-                    gboxMacro.Location.Y);
-            }
             TextBox txtMacroInstance = new TextBox() {
                 Multiline = true,
                 Size = txtMacro.Size,
@@ -169,7 +161,12 @@ namespace rsm {
                 }
             };
             btnDeleteInstance.Click += (sender, e) => {
-                MessageBox.Show("Under development...", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (MessageBox.Show("Delete this macro?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                    config.macros.Remove(macro);
+                    pnlMacros.Controls.Remove(gboxMacroInstance);
+                    UpdateMacroListY();
+                    SaveConfig();
+                }
             };
 
             gboxMacroInstance.Controls.Add(txtMacroInstance);
@@ -179,6 +176,16 @@ namespace rsm {
             gboxMacroInstance.Controls.Add(btnRenameInstance);
             gboxMacroInstance.Controls.Add(btnDeleteInstance);
             pnlMacros.Controls.Add(gboxMacroInstance);
+            lastMacroY += gboxMacro.Height + MACRO_PADDING;
+        }
+
+        void UpdateMacroListY() {
+            lastMacroY = 0;
+            pnlMacros.AutoScrollPosition = Point.Empty;
+            for (int m = 1; m < config.macros.Count + 1; m++) {
+                pnlMacros.Controls[m].Location = new Point(pnlMacros.Controls[m].Location.X, lastMacroY);
+                lastMacroY += gboxMacro.Height + MACRO_PADDING;
+            }
         }
 
         void SelectProcess(object sender, EventArgs e) {
@@ -190,7 +197,7 @@ namespace rsm {
             config.macros.Add(newMacro);
             SaveConfig();
 
-            GenerateMacroUI(config.macros.IndexOf(newMacro));
+            GenerateMacroUI(newMacro, lastMacroY);
         }
 
         void UpdateProcessList(object sender, EventArgs e) {

@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RSMForm));
             this.cboxProcesses = new System.Windows.Forms.ComboBox();
             this.numDelay = new System.Windows.Forms.NumericUpDown();
             this.lblDelay = new System.Windows.Forms.Label();
@@ -312,6 +313,7 @@
             this.Controls.Add(this.numDelay);
             this.Controls.Add(this.cboxProcesses);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "RSMForm";
             this.Text = "Ragnarok Skill Macro";
