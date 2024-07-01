@@ -89,7 +89,7 @@ namespace rsm {
             GroupBox gboxMacroInstance = new GroupBox {
                 Text = macro.Name,
                 Size = gboxMacro.Size,
-                Location = new Point(gboxMacro.Location.X, lastMacroBottomBounds)
+                Location = new Point(gboxMacro.Location.X, lastMacroBottomBounds + pnlMacros.AutoScrollPosition.Y)
             };
             TextBox txtMacroInstance = new TextBox() {
                 Multiline = true,
@@ -156,16 +156,16 @@ namespace rsm {
 
                 if (result == DialogResult.OK) {
                     macro.Name = form.Result;
-                    gboxMacroInstance.Text = macro.Name;
                     SaveConfig();
+                    gboxMacroInstance.Text = macro.Name;
                 }
             };
             btnDeleteInstance.Click += (sender, e) => {
                 if (MessageBox.Show("Delete this macro?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                     config.macros.Remove(macro);
+                    SaveConfig();
                     pnlMacros.Controls.Remove(gboxMacroInstance);
                     UpdateMacroListY();
-                    SaveConfig();
                 }
             };
 
@@ -181,9 +181,8 @@ namespace rsm {
 
         void UpdateMacroListY() {
             lastMacroY = 0;
-            pnlMacros.AutoScrollPosition = Point.Empty;
             for (int m = 1; m < config.macros.Count + 1; m++) {
-                pnlMacros.Controls[m].Location = new Point(pnlMacros.Controls[m].Location.X, lastMacroY);
+                pnlMacros.Controls[m].Location = new Point(pnlMacros.Controls[m].Location.X, lastMacroY + pnlMacros.AutoScrollPosition.Y);
                 lastMacroY += gboxMacro.Height + MACRO_PADDING;
             }
         }
@@ -196,14 +195,12 @@ namespace rsm {
             var newMacro = new Macro("Macro " + (config.macros.Count + 1), Key.None, "");
             config.macros.Add(newMacro);
             SaveConfig();
-
             GenerateMacroUI(newMacro, lastMacroY);
         }
 
         void UpdateProcessList(object sender, EventArgs e) {
             config.processName = txtProcessName.Text;
             SaveConfig();
-
             var processes = Process.GetProcessesByName(txtProcessName.Text);
             if (processes.Length > 0) cboxProcesses.Items.Clear();
             else {
