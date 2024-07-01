@@ -17,5 +17,6 @@ Note: Global delay (can be set by user) is applied between actions
 Press 9 > Wait 50ms > Press y then click > (Global delay) > Press u then click > Wait 150ms > Press u then click
 
 Note: Delays can be overridden by specifying the delay between actions
+
 ----
 ###### Make sure to run the application as administrator
