@@ -93,7 +93,7 @@ namespace rsm {
             if (index > 0) {
                 gboxMacroInstance.Location = new Point(
                     gboxMacro.Location.X,
-                    pnlMacros.Controls[index - 1].Bounds.Bottom + MACRO_PADDING);
+                    pnlMacros.Controls[index].Bounds.Bottom + MACRO_PADDING);
             } else {
                 gboxMacroInstance.Location = new Point(
                     gboxMacro.Location.X,
