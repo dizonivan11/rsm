@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +8,21 @@ using System.Windows.Input;
 
 namespace rsm.Utils {
     public class Macro {
-        public Key Trigger { get; set; }
-        public List<KeyConfig> Actions { get; set; } = new List<KeyConfig>();
-        public int CurrentActionIndex { get; set; }
+        public string Name;
+        public Key Trigger;
+        string _script;
+        public List<KeyConfig> Actions { get; private set; } = new List<KeyConfig>();
+        public string Script { get { return _script; } set { _script = value; Actions.Clear(); Actions = GetActions(value); } }
+        [JsonIgnore]
+        public int CurrentActionIndex;
+        public bool Enabled;
 
-        public Macro(Key trigger, List<KeyConfig> actions) {
+        public Macro(string name, Key trigger, string script, bool enabled = false) {
+            Name = name;
             Trigger = trigger;
-            Actions = actions;
+            Script = script;
+            CurrentActionIndex = 0;
+            Enabled = enabled;
         }
 
         public static List<KeyConfig> GetActions(string macroContent) {
@@ -168,6 +177,90 @@ namespace rsm.Utils {
                 case "x": return Key.X;
                 case "y": return Key.Y;
                 case "z": return Key.Z;
+            }
+        }
+
+        public static string GetKey(Key key) {
+            switch (key) {
+                default: return "none";
+                case Key.Escape: return "escape";
+                case Key.F1: return "f1";
+                case Key.F2: return "f2";
+                case Key.F3: return "f3";
+                case Key.F4: return "f4";
+                case Key.F5: return "f5";
+                case Key.F6: return "f6";
+                case Key.F7: return "f7";
+                case Key.F8: return "f8";
+                case Key.F9: return "f9";
+                case Key.F10: return "f10";
+                case Key.F11: return "f11";
+                case Key.F12: return "f12";
+                case Key.PrintScreen: return "printscreen";
+                case Key.Pause: return "pause";
+                case Key.Delete: return "delete";
+                case Key.OemTilde: return "`";
+                case Key.D1: return "1";
+                case Key.D2: return "2";
+                case Key.D3: return "3";
+                case Key.D4: return "4";
+                case Key.D5: return "5";
+                case Key.D6: return "6";
+                case Key.D7: return "7";
+                case Key.D8: return "8";
+                case Key.D9: return "9";
+                case Key.D0: return "0";
+                case Key.OemMinus: return "-";
+                case Key.OemPlus: return "=";
+                case Key.Back: return "backspace";
+                case Key.Home: return "home";
+                case Key.Tab: return "tab";
+                case Key.OemOpenBrackets: return "[";
+                case Key.OemCloseBrackets: return "]";
+                case Key.OemBackslash: return "\\";
+                case Key.End: return "end";
+                case Key.CapsLock: return "capslock";
+                case Key.Enter: return "enter";
+                case Key.PageUp: return "pageup";
+                case Key.LeftShift: return "leftshift";
+                case Key.RightShift: return "rightshift";
+                case Key.Up: return "up";
+                case Key.PageDown: return "pagedown";
+                case Key.LeftCtrl: return "leftctrl";
+                case Key.LWin: return "leftwin";
+                case Key.Space: return "space";
+                case Key.RightAlt: return "rightalt";
+                case Key.RWin: return "rightwin";
+                case Key.RightCtrl: return "rightctrl";
+                case Key.Left: return "left";
+                case Key.Down: return "down";
+                case Key.Right: return "right";
+                case Key.A: return "a";
+                case Key.B: return "b";
+                case Key.C: return "c";
+                case Key.D: return "d";
+                case Key.E: return "e";
+                case Key.F: return "f";
+                case Key.G: return "g";
+                case Key.H: return "h";
+                case Key.I: return "i";
+                case Key.J: return "j";
+                case Key.K: return "k";
+                case Key.L: return "l";
+                case Key.M: return "m";
+                case Key.N: return "n";
+                case Key.O: return "o";
+                case Key.P: return "p";
+                case Key.Q: return "q";
+                case Key.R: return "r";
+                case Key.S: return "s";
+                case Key.T: return "t";
+                case Key.U: return "u";
+                case Key.V: return "v";
+                case Key.W: return "w";
+                case Key.X: return "x";
+                case Key.Y: return "y";
+                case Key.Z: return "z";
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace rsm {
@@ -13,6 +14,7 @@ namespace rsm {
                     finally { Thread.Sleep(5); }
                 }
             });
+            thread.IsBackground = true;
             thread.SetApartmentState(ApartmentState.STA);
         }
 

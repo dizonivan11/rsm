@@ -36,6 +36,9 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Dialogs\dialogRename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\dialogRename.Designer.cs">
+      <DependentUpon>dialogRename.cs</DependentUpon>
+    </Compile>
     <Compile Include="MacroThread.cs" />
     <Compile Include="RSMForm.cs">
       <SubType>Form</SubType>
@@ -61,12 +70,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Config.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Interop.cs" />
     <Compile Include="Utils\KeyboardHook.cs" />
     <Compile Include="Utils\KeyConfig.cs" />
     <Compile Include="Utils\Macro.cs" />
     <Compile Include="Utils\ProcessMemoryReader.cs" />
+    <EmbeddedResource Include="Dialogs\dialogRename.resx">
+      <DependentUpon>dialogRename.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RSMForm.resx">
       <DependentUpon>RSMForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -79,6 +92,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
