@@ -155,6 +155,7 @@ namespace rsm {
             };
             btnSaveScriptInstance.Click += (sender, e) => {
                 macro.Script = txtMacroInstance.Text;
+                macro.UpdateActions();
                 SaveConfig();
             };
             btnRenameInstance.Click += (sender, e) => {
@@ -213,12 +214,7 @@ namespace rsm {
             SaveConfig();
         }
 
-        void SaveConfig() {
-            string configContent = JsonConvert.SerializeObject(config, Formatting.Indented);
-            File.WriteAllText(CONFIG_PATH, configContent);
-        }
-
-        private void ToggleMacro(object sender, EventArgs e) {
+        void ToggleMacro(object sender, EventArgs e) {
             if (btnToggle.Text == "ON") {
                 btnToggle.Text = "OFF";
                 btnToggle.BackColor = Color.Crimson;
@@ -235,6 +231,11 @@ namespace rsm {
                     MessageBox.Show("Select process first", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        void SaveConfig() {
+            string configContent = JsonConvert.SerializeObject(config, Formatting.Indented);
+            File.WriteAllText(CONFIG_PATH, configContent);
         }
     }
 }

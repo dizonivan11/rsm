@@ -1,18 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace rsm.Utils {
     public class Macro {
         public string Name;
         public Key Trigger;
-        string _script;
-        public List<KeyConfig> Actions { get; private set; } = new List<KeyConfig>();
-        public string Script { get { return _script; } set { _script = value; Actions.Clear(); Actions = GetActions(value); } }
+        public string Script;
+        [JsonIgnore]
+        public readonly List<KeyConfig> Actions = new List<KeyConfig>();
         [JsonIgnore]
         public int CurrentActionIndex;
         public bool Enabled;
@@ -21,19 +19,20 @@ namespace rsm.Utils {
             Name = name;
             Trigger = trigger;
             Script = script;
+            UpdateActions();
             CurrentActionIndex = 0;
             Enabled = enabled;
         }
 
-        public static List<KeyConfig> GetActions(string macroContent) {
-            List<KeyConfig> KeyConfigs = new List<KeyConfig>();
+        public void UpdateActions() {
+            Actions.Clear();
             int currentCharIndex = 0;
             ParseMode currentMode = ParseMode.None;
             KeyConfig previousKeyConfig = null;
             bool currentClickActive = false;
             StringBuilder stringBuffer = new StringBuilder();
-            while (currentCharIndex < macroContent.Length) {
-                char currentChar = macroContent[currentCharIndex];
+            while (currentCharIndex < Script.Length) {
+                char currentChar = Script[currentCharIndex];
                 switch (currentMode) {
                     case ParseMode.None:
                         switch (currentChar) {
@@ -62,7 +61,7 @@ namespace rsm.Utils {
                                 // Saving keyconfig
                                 var kc = new KeyConfig(GetKey(stringBuffer.ToString()), currentClickActive);
                                 previousKeyConfig = kc;
-                                KeyConfigs.Add(kc);
+                                Actions.Add(kc);
                                 stringBuffer.Clear();
                                 currentClickActive = false;
                                 currentMode = ParseMode.None;
@@ -82,7 +81,7 @@ namespace rsm.Utils {
                                 // Saving keyconfig
                                 var kc = new KeyConfig(GetKey(stringBuffer.ToString()), currentClickActive);
                                 previousKeyConfig = kc;
-                                KeyConfigs.Add(kc);
+                                Actions.Add(kc);
                                 stringBuffer.Clear();
                                 currentClickActive = false;
                                 currentMode = ParseMode.None;
@@ -93,7 +92,6 @@ namespace rsm.Utils {
                 }
                 currentCharIndex++;
             }
-            return KeyConfigs;
         }
 
         public static Key GetKey(string key) {
