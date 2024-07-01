@@ -1,6 +1,6 @@
 # rsm
 
-RMS (Ragnarok Skill Macro) is a macro tool for chaining skills, items and commands in Ragnarok Online. If the server allows 4rTools, then you can safely use this software.
+RSM (Ragnarok Skill Macro) is a macro tool for chaining skills, items and commands in Ragnarok Online. If the server allows 4rTools, then you can safely use this software.
 
 Examples:
 
