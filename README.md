@@ -8,7 +8,7 @@ Examples:
 {9}{F3 c}{delete}
 ```
 Press 9 > Press F3 then click > Press Delete key
-#### Note: Default delays (can be set by user) between actions
+#### Note: Global delay (can be set by user) is applied between actions
 
 ```
 {9}50{y c}{u c}150{u c}
